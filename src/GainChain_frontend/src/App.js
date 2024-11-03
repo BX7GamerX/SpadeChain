@@ -1,6 +1,5 @@
 import { html, render } from 'lit-html';
 import { GainChain_backend } from 'declarations/GainChain_backend';
-import logo from './logo2.svg';
 
 class App {
   greeting = '';
@@ -19,15 +18,7 @@ class App {
   #render() {
     let body = html`
       <main>
-        <img src="${logo}" alt="DFINITY logo" />
-        <br />
-        <br />
-        <form action="#">
-          <label for="name">Enter your name: &nbsp;</label>
-          <input id="name" alt="Name" type="text" />
-          <button type="submit">Click Me!</button>
-        </form>
-        <section id="greeting">${this.greeting}</section>
+        
       </main>
     `;
     render(body, document.getElementById('root'));
