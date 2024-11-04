@@ -1,0 +1,44 @@
+/* src/styles/global.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.app-content {
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  color: #333;
+}
+/* src/styles/global.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.app-content {
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  color: #333;
+}

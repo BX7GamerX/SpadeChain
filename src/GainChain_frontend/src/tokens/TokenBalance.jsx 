@@ -1,0 +1,13 @@
+// src/tokens/TokenBalance.jsx
+import React from 'react';
+
+const TokenBalance = () => {
+  return (
+    <div>
+      <h2>Your Token Balance</h2>
+      <p>1000 Tokens</p>
+    </div>
+  );
+};
+
+export default TokenBalance;

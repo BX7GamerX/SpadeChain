@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'url';
 import environment from 'vite-plugin-environment';
@@ -14,6 +14,9 @@ export default defineConfig({
     esbuildOptions: {
       define: {
         global: "globalThis",
+      },
+      loader: {
+        '.js': 'jsx', // This line tells ESBuild to treat .js files as JSX.
       },
     },
   },
