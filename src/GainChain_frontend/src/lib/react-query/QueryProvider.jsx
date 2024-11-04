@@ -2,9 +2,10 @@ import React from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
+export const QueryProvider = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}

@@ -30,60 +30,49 @@ const PostForm = ({ post, action }: PostFormProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUserContext();
+
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
-      caption: post ? post?.caption : "",
+      caption: post?.caption || "",
       file: [],
-      location: post ? post.location : "",
-      tags: post ? post.tags.join(",") : "",
+      location: post?.location || "",
+      tags: post?.tags.join(", ") || "",
     },
   });
 
-  // Query
-  const { mutateAsync: createPost, isLoading: isLoadingCreate } =
-    useCreatePost();
-  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
-    useUpdatePost();
+  const { mutateAsync: createPost, isLoading: isLoadingCreate } = useCreatePost();
+  const { mutateAsync: updatePost, isLoading: isLoadingUpdate } = useUpdatePost();
 
-  // Handler
   const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
-    // ACTION = UPDATE
-    if (post && action === "Update") {
-      const updatedPost = await updatePost({
-        ...value,
-        postId: post.$id,
-        imageId: post.imageId,
-        imageUrl: post.imageUrl,
-      });
-
-      if (!updatedPost) {
-        toast({
-          title: `${action} post failed. Please try again.`,
+    try {
+      if (post && action === "Update") {
+        await updatePost({
+          ...value,
+          postId: post.$id,
+          imageId: post.imageId,
+          imageUrl: post.imageUrl,
         });
+        toast({ title: "Post updated successfully!" });
+        return navigate(`/posts/${post.$id}`);
       }
-      return navigate(`/posts/${post.$id}`);
-    }
 
-    // ACTION = CREATE
-    const newPost = await createPost({
-      ...value,
-      userId: user.id,
-    });
-
-    if (!newPost) {
+      await createPost({
+        ...value,
+        userId: user.id,
+      });
+      toast({ title: "Post created successfully!" });
+      navigate("/");
+    } catch (error) {
       toast({
         title: `${action} post failed. Please try again.`,
       });
     }
-    navigate("/");
   };
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="flex flex-col gap-9 w-full  max-w-5xl">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
         <FormField
           control={form.control}
           name="caption"
@@ -91,10 +80,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Caption</FormLabel>
               <FormControl>
-                <Textarea
-                  className="shad-textarea custom-scrollbar"
-                  {...field}
-                />
+                <Textarea className="shad-textarea custom-scrollbar" {...field} />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -108,10 +94,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Add Photos</FormLabel>
               <FormControl>
-                <FileUploader
-                  fieldChange={field.onChange}
-                  mediaUrl={post?.imageUrl}
-                />
+                <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl} />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
@@ -138,7 +121,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="shad-form_label">
-                Add Tags (separated by comma " , ")
+                Add Tags (separated by commas)
               </FormLabel>
               <FormControl>
                 <Input
@@ -157,13 +140,15 @@ const PostForm = ({ post, action }: PostFormProps) => {
           <Button
             type="button"
             className="shad-button_dark_4"
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(-1)}
+          >
             Cancel
           </Button>
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
-            disabled={isLoadingCreate || isLoadingUpdate}>
+            disabled={isLoadingCreate || isLoadingUpdate}
+          >
             {(isLoadingCreate || isLoadingUpdate) && <Loader />}
             {action} Post
           </Button>

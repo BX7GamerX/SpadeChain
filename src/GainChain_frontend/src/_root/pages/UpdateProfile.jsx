@@ -10,14 +10,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useToast } from "@/components/ui/use-toast";
-import { Textarea, Input, Button } from "@/components/ui";
-import { ProfileUploader, Loader } from "@/components/shared";
+} from "../../components/ui/form";
+import { useToast } from "../../components/ui/use-toast";
+import { Textarea, Input, Button } from "../../components/ui";
+import { ProfileUploader, Loader } from "../../components/shared";
 
-import { ProfileValidation } from "@/lib/validation";
-import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById, useUpdateUser } from "@/lib/react-query/queries";
+import { ProfileValidation } from "../../lib/validation";
+import { useUserContext } from "../../context/AuthContext";
+import { useGetUserById, useUpdateUser } from "../../lib/react-query/queries";
 
 const UpdateProfile = () => {
   const { toast } = useToast();

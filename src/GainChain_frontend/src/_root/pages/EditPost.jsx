@@ -1,19 +1,20 @@
 import { useParams } from "react-router-dom";
-
-import { Loader } from "@/components/shared";
-import PostForm from "@/components/forms/PostForm";
-import { useGetPostById } from "@/lib/react-query/queries";
+import { Loader } from "../../components/shared";
+import PostForm from "../../components/forms/PostForm";
+import { useGetPostById } from "../../lib/react-query/queries";
 
 const EditPost = () => {
   const { id } = useParams();
   const { data: post, isLoading } = useGetPostById(id);
 
-  if (isLoading)
+  // Show loader while fetching post data
+  if (isLoading) {
     return (
       <div className="flex-center w-full h-full">
         <Loader />
       </div>
     );
+  }
 
   return (
     <div className="flex flex-1">
@@ -23,13 +24,14 @@ const EditPost = () => {
             src="/assets/icons/edit.svg"
             width={36}
             height={36}
-            alt="edit"
+            alt="Edit Post"
             className="invert-white"
           />
           <h2 className="h3-bold md:h2-bold text-left w-full">Edit Post</h2>
         </div>
 
-        {isLoading ? <Loader /> : <PostForm action="Update" post={post} />}
+        {/* Pass post data to PostForm for editing */}
+        <PostForm action="Update" post={post} />
       </div>
     </div>
   );

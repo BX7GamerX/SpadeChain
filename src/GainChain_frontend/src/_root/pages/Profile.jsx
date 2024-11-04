@@ -7,18 +7,18 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { Button } from "@/components/ui";
-import { LikedPosts } from "@/_root/pages";
-import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById } from "@/lib/react-query/queries";
-import { GridPostList, Loader } from "@/components/shared";
+import { Button } from "../../components/ui";
+import { LikedPosts } from "../../_root/pages";
+import { useUserContext } from "../../context/AuthContext";
+import { useGetUserById } from "../../lib/react-query/queries";
+import { GridPostList, Loader } from "../../components/shared";
 
-interface StabBlockProps {
+interface StatBlockProps {
   value: string | number;
   label: string;
 }
 
-const StatBlock = ({ value, label }: StabBlockProps) => (
+const StatBlock = ({ value, label }: StatBlockProps) => (
   <div className="flex-center gap-2">
     <p className="small-semibold lg:body-bold text-primary-500">{value}</p>
     <p className="small-medium lg:base-medium text-light-2">{label}</p>
@@ -30,23 +30,30 @@ const Profile = () => {
   const { user } = useUserContext();
   const { pathname } = useLocation();
 
-  const { data: currentUser } = useGetUserById(id || "");
+  const { data: currentUser, isLoading } = useGetUserById(id || "");
 
-  if (!currentUser)
+  if (isLoading) {
     return (
       <div className="flex-center w-full h-full">
         <Loader />
       </div>
     );
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="flex-center w-full h-full">
+        <p className="body-medium text-light-1">User not found</p>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
       <div className="profile-inner_container">
         <div className="flex xl:flex-row flex-col max-xl:items-center flex-1 gap-7">
           <img
-            src={
-              currentUser.imageUrl || "/assets/icons/profile-placeholder.svg"
-            }
+            src={currentUser.imageUrl || "/assets/icons/profile-placeholder.svg"}
             alt="profile"
             className="w-28 h-28 lg:h-36 lg:w-36 rounded-full"
           />
@@ -72,14 +79,13 @@ const Profile = () => {
           </div>
 
           <div className="flex justify-center gap-4">
-            <div className={`${user.id !== currentUser.$id && "hidden"}`}>
+            {user.id === currentUser.$id && (
               <Link
                 to={`/update-profile/${currentUser.$id}`}
-                className={`h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg ${
-                  user.id !== currentUser.$id && "hidden"
-                }`}>
+                className="h-12 bg-dark-4 px-5 text-light-1 flex-center gap-2 rounded-lg"
+              >
                 <img
-                  src={"/assets/icons/edit.svg"}
+                  src="/assets/icons/edit.svg"
                   alt="edit"
                   width={20}
                   height={20}
@@ -88,12 +94,12 @@ const Profile = () => {
                   Edit Profile
                 </p>
               </Link>
-            </div>
-            <div className={`${user.id === id && "hidden"}`}>
+            )}
+            {user.id !== id && (
               <Button type="button" className="shad-button_primary px-8">
                 Follow
               </Button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -104,9 +110,10 @@ const Profile = () => {
             to={`/profile/${id}`}
             className={`profile-tab rounded-l-lg ${
               pathname === `/profile/${id}` && "!bg-dark-3"
-            }`}>
+            }`}
+          >
             <img
-              src={"/assets/icons/posts.svg"}
+              src="/assets/icons/posts.svg"
               alt="posts"
               width={20}
               height={20}
@@ -117,9 +124,10 @@ const Profile = () => {
             to={`/profile/${id}/liked-posts`}
             className={`profile-tab rounded-r-lg ${
               pathname === `/profile/${id}/liked-posts` && "!bg-dark-3"
-            }`}>
+            }`}
+          >
             <img
-              src={"/assets/icons/like.svg"}
+              src="/assets/icons/like.svg"
               alt="like"
               width={20}
               height={20}
@@ -135,7 +143,7 @@ const Profile = () => {
           element={<GridPostList posts={currentUser.posts} showUser={false} />}
         />
         {currentUser.$id === user.id && (
-          <Route path="/liked-posts" element={<LikedPosts />} />
+          <Route path="liked-posts" element={<LikedPosts />} />
         )}
       </Routes>
       <Outlet />
