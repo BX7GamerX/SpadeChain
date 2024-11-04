@@ -1,5 +1,9 @@
 {
   "canisters": {
+    "internet_identity" : {
+      "type": "pull",
+      "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+    },
     "GainChain_backend": {
       "candid": "src/GainChain_backend/GainChain_backend.did",  
       "package": "gain_chain_backend",  
@@ -14,17 +18,6 @@
       ],
       "type": "assets",
       "workspace": "GainChain_frontend"
-    },
-    "internet_identity": {
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "frontend": {},
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      },
-      "type": "custom",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
     }
   },
   "defaults": {

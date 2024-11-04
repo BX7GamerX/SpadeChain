@@ -49,3 +49,10 @@ impl Contract {
 fn greet(name: String) -> String {
     format!("Hello, {}!", name)
 }
+#[update]
+pub fn who_am_i() -> Principal {
+    let caller = ic_cdk::caller();
+    return caller;
+}
+// Export Candid interface
+ic_cdk::export_candid!();
