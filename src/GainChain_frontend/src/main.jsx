@@ -1,14 +1,20 @@
-import { html, render } from 'lit-html';
-import App from './App';
-import './index.scss';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
-const app = new App();
+import { AuthProvider } from "./context/AuthContext";
+import { QueryProvider } from "./lib/react-query/QueryProvider";
 
-// Render the app to the root element in the DOM
-const root = document.getElementById('root');
+import App from "./App";
 
-if (root) {
-  render(app.render(), root); // Call the public render method
-} else {
-  console.error('Root element not found');
-}
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </QueryProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
